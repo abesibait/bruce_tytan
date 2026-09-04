@@ -35,7 +35,7 @@ jobs:
         run: pip install platformio
 
       - name: Build
-        run: pio run -e "${{ inputs.environment }}"
+        run: pio run -e Tytan
 
       - name: Upload firmware
         if: success()
