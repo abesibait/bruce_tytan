@@ -12,6 +12,10 @@
 #include "PCA9555.h"
 #define IO_EXP_CLASS PCA9555
 #define IO_EXPANDER_ADDRESS PCA9555_DEFAULT_ADDR // 0x58
+#elif defined(IO_EXPANDER_PCF8575)
+#include "PCF8575.h"
+#define IO_EXP_CLASS PCF8575
+#define IO_EXPANDER_ADDRESS PCF8575_DEFAULT_ADDR // 0x20
 #endif
 
 #ifndef IO_EXP_GPS // Used in Smoochiee and T-Lora
@@ -58,8 +62,14 @@
 #ifndef IO_EXP_SEL
 #define IO_EXP_SEL -1
 #endif
+#ifndef IO_EXP_BTN1
+#define IO_EXP_BTN1 -1
+#endif
+#ifndef IO_EXP_BTN2
+#define IO_EXP_BTN2 -1
+#endif
 
-#if defined(IO_EXPANDER_AW9523) || defined(IO_EXPANDER_PCA9555)
+#if defined(IO_EXPANDER_AW9523) || defined(IO_EXPANDER_PCA9555) || defined(IO_EXPANDER_PCF8575)
 
 class io_expander : public IO_EXP_CLASS {
 private:
@@ -109,6 +119,8 @@ public:
         button(IO_EXP_LEFT);
         button(IO_EXP_RIGHT);
         button(IO_EXP_SEL);
+        button(IO_EXP_BTN1);
+        button(IO_EXP_BTN2);
 
         // IMPORTANT: Disable all interrupts at startup
         interruptEnableGPIOWrapper(0x0000);
@@ -148,6 +160,8 @@ public:
         clearInterruptBit(mask, IO_EXP_LEFT);
         clearInterruptBit(mask, IO_EXP_RIGHT);
         clearInterruptBit(mask, IO_EXP_SEL);
+        clearInterruptBit(mask, IO_EXP_BTN1);
+        clearInterruptBit(mask, IO_EXP_BTN2);
 
         return interruptEnableGPIOWrapper(mask);
     }
