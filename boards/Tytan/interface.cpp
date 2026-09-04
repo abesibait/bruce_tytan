@@ -13,6 +13,9 @@ void _setup_gpio() {
     setSysI2CBus(&Wire);
     Wire.setPins(SYS_I2C_SDA, SYS_I2C_SCL);
     Wire.begin(SYS_I2C_SDA, SYS_I2C_SCL);
+#ifdef USE_IO_EXPANDER
+    ioExpander.begin();
+#endif
 
     pinMode(CC1101_SS_PIN, OUTPUT);
     pinMode(NRF24_SS_PIN, OUTPUT);
@@ -67,10 +70,6 @@ void InputHandler(void) {
     bool _e = ioExpander.readPin(IO_EXP_ESC);
     bool _btn1 = ioExpander.readPin(IO_EXP_BTN1);
     bool _btn2 = ioExpander.readPin(IO_EXP_BTN2);
-    // bool _d = digitalRead(IO_EXP_DOWN);
-    // bool _l = digitalRead(L_BTN);
-    // bool _r = digitalRead(R_BTN);
-    // bool _s = digitalRead(SEL_BTN);
 
     if (!_s || !_u || !_d || !_r || !_l) {
         tm = millis();

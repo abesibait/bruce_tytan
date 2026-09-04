@@ -6,8 +6,11 @@ on:
       environment:
         description: "PlatformIO environment"
         required: true
-        default: "Tytan"
-        type: string
+        default: Tytan
+        type: choice
+        options:
+          - Tytan
+          - smoochiee-board
 
 jobs:
   build:
@@ -35,7 +38,7 @@ jobs:
         run: pip install platformio
 
       - name: Build
-        run: pio run -e Tytan
+        run: pio run -e ${{inputs.environment}} by @${{github.actor}}
 
       - name: Upload firmware
         if: success()
